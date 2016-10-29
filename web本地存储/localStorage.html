@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+	
+		#note {
+			margin: 20px 0;
+		}
+
+		#text-value {
+			display: block;
+			width: 300px;
+			height: 100px;
+			border: 1px red solid;
+		}
+
+		button {
+			margin-top: 20px;
+		}
+
+	</style>
+</head>
+<body>
+	<h2>留言板</h2>
+	<div>
+		<ul id="note"></ul>
+	</div>
+	<textarea id="text-value" cols="30" rows="10"></textarea>
+	<button id="clear">清除留言</button>
+	<button id="add">添加留言</button>
+</body>
+<script type="text/javascript">
+
+window.onload = function(){
+
+	var add = document.getElementById("add"),
+		textValue = document.getElementById("text-value"),
+		note = document.getElementById("note"),
+		clear = document.getElementById("clear");
+
+	function show() {
+		var data = localStorage.getItem("msg");
+		if ( data ) {
+			data = data.split(",");
+			var liString = '';
+			for( var i in data ){
+				liString += '<li>'+data[i]+'</li>';
+			}
+			note.innerHTML = liString;
+		} else {
+			note.innerHTML = "暂时没有留言哦!，赶紧来抢沙发啊啊"
+		}
+	};
+
+	show();
+
+	add.onclick = function() {
+		var text = textValue.value,
+			value = window.localStorage.msg;
+		if ( text == '') return ;
+		if ( value ) {
+			value = value.split(",");
+			value.push(text);
+			window.localStorage.msg = value;
+		} else {
+			var data = [];
+			data.push(text);
+			window.localStorage.msg = data;
+		}
+		show();
+	};
+
+	clear.onclick = function() {
+		localStorage.removeItem("msg");
+		show();
+	}
+
+};
+
+</script>
+</html>
